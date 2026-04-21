@@ -1,0 +1,22 @@
+# General
+.DS_Store
+Thumbs.db
+
+# Visual Studio / .NET
+.vs/
+bin/
+obj/
+*.user
+*.suo
+
+# Node / Angular
+node_modules/
+dist/
+.angular/
+coverage/
+
+# Environment
+.env
+
+# Logs
+*.log
