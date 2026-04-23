@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+// Services
 builder.Services.AddControllers();
 
 builder.Services.AddDbContext<TaskDbContext>(options =>
@@ -14,14 +14,15 @@ builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+// Middleware
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+// Comentado para evitar ruído de redirecionamento HTTPS durante os testes locais
+// app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
