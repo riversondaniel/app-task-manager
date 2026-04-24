@@ -1,0 +1,54 @@
+<div class="container">
+  <h1>{{ isEditMode ? 'Editar tarefa' : 'Nova tarefa' }}</h1>
+
+  @if (loading) {
+    <p>Carregando...</p>
+  }
+
+  @if (errorMessage) {
+    <p class="error">{{ errorMessage }}</p>
+  }
+
+  <form (ngSubmit)="save()" #taskForm="ngForm" class="form">
+    <div class="field">
+      <label for="title">Título</label>
+      <input
+        id="title"
+        name="title"
+        [(ngModel)]="form.title"
+        required
+      />
+    </div>
+
+    <div class="field">
+      <label for="description">Descrição</label>
+      <textarea
+        id="description"
+        name="description"
+        [(ngModel)]="form.description"
+        rows="4"
+        required
+      ></textarea>
+    </div>
+
+    <div class="field">
+      <label for="status">Status</label>
+      <select
+        id="status"
+        name="status"
+        [(ngModel)]="form.status"
+        required
+      >
+        <option value="Pendente">Pendente</option>
+        <option value="Concluida">Concluida</option>
+      </select>
+    </div>
+
+    <div class="actions">
+      <button type="submit" class="button primary">
+        {{ isEditMode ? 'Atualizar' : 'Salvar' }}
+      </button>
+      <a routerLink="/" class="button secondary">Voltar</a>
+    </div>
+  </form>
+</div>

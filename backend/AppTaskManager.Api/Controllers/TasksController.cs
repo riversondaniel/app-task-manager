@@ -2,7 +2,6 @@ using AppTaskManager.Api.Data;
 using AppTaskManager.Api.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System.Text.Json;
 
 namespace AppTaskManager.Api.Controllers
 {
@@ -41,15 +40,10 @@ namespace AppTaskManager.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<TaskItem>> Create([FromBody] TaskItem task)
+        public async Task<ActionResult<TaskItem>> Create(TaskItem task)
         {
-            if (task == null)
-            {
-                return BadRequest("Request body is required.");
-            }
-
             task.Id = 0;
-            task.CreatedAt = DateTime.UtcNow;
+            task.CreatedAt = DateTime.Now;
 
             _context.Tasks.Add(task);
             await _context.SaveChangesAsync();
@@ -58,7 +52,7 @@ namespace AppTaskManager.Api.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id, [FromBody] JsonElement body)
+        public async Task<IActionResult> Update(int id, TaskItem task)
         {
             var existingTask = await _context.Tasks.FindAsync(id);
 
@@ -67,16 +61,9 @@ namespace AppTaskManager.Api.Controllers
                 return NotFound();
             }
 
-            if (!body.TryGetProperty("title", out var titleProp) ||
-                !body.TryGetProperty("description", out var descriptionProp) ||
-                !body.TryGetProperty("status", out var statusProp))
-            {
-                return BadRequest("Title, description and status are required.");
-            }
-
-            existingTask.Title = titleProp.GetString() ?? string.Empty;
-            existingTask.Description = descriptionProp.GetString() ?? string.Empty;
-            existingTask.Status = statusProp.GetString() ?? string.Empty;
+            existingTask.Title = task.Title;
+            existingTask.Description = task.Description;
+            existingTask.Status = task.Status;
 
             await _context.SaveChangesAsync();
 
